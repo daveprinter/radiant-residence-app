@@ -20,6 +20,7 @@ import { Route as OrderRouteImport } from './routes/order'
 import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as RewardsRouteImport } from './routes/rewards'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as StaffRouteImport } from './routes/staff'
 import { Route as WalletRouteImport } from './routes/wallet'
 import { Route as OrdersIndexRouteImport } from './routes/orders.index'
 import { Route as OrdersOrderIdRouteImport } from './routes/orders.$orderId'
@@ -79,6 +80,11 @@ const SettingsRoute = SettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StaffRoute = StaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WalletRoute = WalletRouteImport.update({
   id: '/wallet',
   path: '/wallet',
@@ -107,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/partner': typeof PartnerRoute
   '/rewards': typeof RewardsRoute
   '/settings': typeof SettingsRoute
+  '/staff': typeof StaffRoute
   '/wallet': typeof WalletRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/orders/': typeof OrdersIndexRoute
@@ -123,6 +130,7 @@ export interface FileRoutesByTo {
   '/partner': typeof PartnerRoute
   '/rewards': typeof RewardsRoute
   '/settings': typeof SettingsRoute
+  '/staff': typeof StaffRoute
   '/wallet': typeof WalletRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/orders': typeof OrdersIndexRoute
@@ -140,6 +148,7 @@ export interface FileRoutesById {
   '/partner': typeof PartnerRoute
   '/rewards': typeof RewardsRoute
   '/settings': typeof SettingsRoute
+  '/staff': typeof StaffRoute
   '/wallet': typeof WalletRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/orders/': typeof OrdersIndexRoute
@@ -158,6 +167,7 @@ export interface FileRouteTypes {
     | '/partner'
     | '/rewards'
     | '/settings'
+    | '/staff'
     | '/wallet'
     | '/orders/$orderId'
     | '/orders/'
@@ -174,6 +184,7 @@ export interface FileRouteTypes {
     | '/partner'
     | '/rewards'
     | '/settings'
+    | '/staff'
     | '/wallet'
     | '/orders/$orderId'
     | '/orders'
@@ -190,6 +201,7 @@ export interface FileRouteTypes {
     | '/partner'
     | '/rewards'
     | '/settings'
+    | '/staff'
     | '/wallet'
     | '/orders/$orderId'
     | '/orders/'
@@ -207,6 +219,7 @@ export interface RootRouteChildren {
   PartnerRoute: typeof PartnerRoute
   RewardsRoute: typeof RewardsRoute
   SettingsRoute: typeof SettingsRoute
+  StaffRoute: typeof StaffRoute
   WalletRoute: typeof WalletRoute
   OrdersOrderIdRoute: typeof OrdersOrderIdRoute
   OrdersIndexRoute: typeof OrdersIndexRoute
@@ -291,6 +304,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/staff': {
+      id: '/staff'
+      path: '/staff'
+      fullPath: '/staff'
+      preLoaderRoute: typeof StaffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/wallet': {
       id: '/wallet'
       path: '/wallet'
@@ -327,6 +347,7 @@ const rootRouteChildren: RootRouteChildren = {
   PartnerRoute: PartnerRoute,
   RewardsRoute: RewardsRoute,
   SettingsRoute: SettingsRoute,
+  StaffRoute: StaffRoute,
   WalletRoute: WalletRoute,
   OrdersOrderIdRoute: OrdersOrderIdRoute,
   OrdersIndexRoute: OrdersIndexRoute,
