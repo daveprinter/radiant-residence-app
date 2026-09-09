@@ -588,7 +588,7 @@ export function AdminSettings() {
 
   const save = async () => {
     if (!user) return;
-    const updates: Array<{ key: string; value: Record<string, unknown> }> = [
+    const updates: Array<{ key: string; value: Record<string, string | number> }> = [
       {
         key: "business",
         value: {
