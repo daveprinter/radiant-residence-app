@@ -18,6 +18,7 @@ import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as OrderRouteImport } from './routes/order'
 import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as WalletRouteImport } from './routes/wallet'
 import { Route as OrdersIndexRouteImport } from './routes/orders.index'
 import { Route as OrdersOrderIdRouteImport } from './routes/orders.$orderId'
 
@@ -66,6 +67,11 @@ const SettingsRoute = SettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WalletRoute = WalletRouteImport.update({
+  id: '/wallet',
+  path: '/wallet',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OrdersIndexRoute = OrdersIndexRouteImport.update({
   id: '/orders/',
   path: '/orders/',
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/order': typeof OrderRoute
   '/partner': typeof PartnerRoute
   '/settings': typeof SettingsRoute
+  '/wallet': typeof WalletRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/orders/': typeof OrdersIndexRoute
 }
@@ -100,6 +107,7 @@ export interface FileRoutesByTo {
   '/order': typeof OrderRoute
   '/partner': typeof PartnerRoute
   '/settings': typeof SettingsRoute
+  '/wallet': typeof WalletRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/orders': typeof OrdersIndexRoute
 }
@@ -114,6 +122,7 @@ export interface FileRoutesById {
   '/order': typeof OrderRoute
   '/partner': typeof PartnerRoute
   '/settings': typeof SettingsRoute
+  '/wallet': typeof WalletRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/orders/': typeof OrdersIndexRoute
 }
@@ -129,6 +138,7 @@ export interface FileRouteTypes {
     | '/order'
     | '/partner'
     | '/settings'
+    | '/wallet'
     | '/orders/$orderId'
     | '/orders/'
   fileRoutesByTo: FileRoutesByTo
@@ -142,6 +152,7 @@ export interface FileRouteTypes {
     | '/order'
     | '/partner'
     | '/settings'
+    | '/wallet'
     | '/orders/$orderId'
     | '/orders'
   id:
@@ -155,6 +166,7 @@ export interface FileRouteTypes {
     | '/order'
     | '/partner'
     | '/settings'
+    | '/wallet'
     | '/orders/$orderId'
     | '/orders/'
   fileRoutesById: FileRoutesById
@@ -169,6 +181,7 @@ export interface RootRouteChildren {
   OrderRoute: typeof OrderRoute
   PartnerRoute: typeof PartnerRoute
   SettingsRoute: typeof SettingsRoute
+  WalletRoute: typeof WalletRoute
   OrdersOrderIdRoute: typeof OrdersOrderIdRoute
   OrdersIndexRoute: typeof OrdersIndexRoute
 }
@@ -238,6 +251,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/wallet': {
+      id: '/wallet'
+      path: '/wallet'
+      fullPath: '/wallet'
+      preLoaderRoute: typeof WalletRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/orders/': {
       id: '/orders/'
       path: '/orders'
@@ -265,6 +285,7 @@ const rootRouteChildren: RootRouteChildren = {
   OrderRoute: OrderRoute,
   PartnerRoute: PartnerRoute,
   SettingsRoute: SettingsRoute,
+  WalletRoute: WalletRoute,
   OrdersOrderIdRoute: OrdersOrderIdRoute,
   OrdersIndexRoute: OrdersIndexRoute,
 }
