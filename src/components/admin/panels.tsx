@@ -121,7 +121,7 @@ export function AdminServices() {
     },
   });
 
-  const update = async (id: string, patch: Record<string, unknown>) => {
+  const update = async (id: string, patch: { active?: boolean; base_price?: number }) => {
     await supabase.from("services").update(patch).eq("id", id);
     void qc.invalidateQueries({ queryKey: ["admin-services"] });
   };
