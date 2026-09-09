@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1788963710338,
+      "tag": "0000_brightride_core_schema",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1788963749150,
+      "tag": "0001_email_registered_helper",
+      "breakpoints": true
+    }
+  ]
+}
