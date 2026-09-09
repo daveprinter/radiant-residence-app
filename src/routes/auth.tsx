@@ -121,9 +121,20 @@ function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-ink">
+    <div className="relative min-h-screen bg-background text-ink">
+      <video
+        src={cleaningVideo.url}
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 -z-10 size-full object-cover"
+      />
+      <div className="pointer-events-none fixed inset-0 -z-10 bg-background/70" />
       <InstallPrompt />
-      <div className="brand-gradient px-5 pb-8 pt-8 text-primary-foreground">
+      <div className="brand-gradient px-5 pb-8 pt-8 text-primary-foreground opacity-95">
         <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary-foreground/70">
           Welcome to
         </p>
@@ -133,7 +144,7 @@ function AuthPage() {
         </p>
       </div>
 
-      <div className="-mt-5 rounded-t-[26px] bg-background px-4 pb-16 pt-5">
+      <div className="-mt-5 rounded-t-[26px] bg-background/85 px-4 pb-16 pt-5 backdrop-blur-sm">
         {!role ? (
           <>
             <h2 className="mb-1 font-display text-[18px] font-bold">Create your account</h2>
