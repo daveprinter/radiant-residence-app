@@ -68,7 +68,7 @@ export const LOYALTY_TIERS = [
 ] as const;
 
 export function loyaltyTier(points: number) {
-  let current = LOYALTY_TIERS[0];
+  let current: { name: string; min: number } = LOYALTY_TIERS[0];
   for (const t of LOYALTY_TIERS) if (points >= t.min) current = t;
   const next = LOYALTY_TIERS.find((t) => t.min > points);
   return { name: current.name, next: next?.name ?? null, nextAt: next?.min ?? null };
@@ -83,7 +83,7 @@ export const PARTNER_LEVELS = [
 ] as const;
 
 export function partnerLevel(referrals: number) {
-  let current = PARTNER_LEVELS[0];
+  let current: { name: string; min: number } = PARTNER_LEVELS[0];
   for (const l of PARTNER_LEVELS) if (referrals >= l.min) current = l;
   const next = PARTNER_LEVELS.find((l) => l.min > referrals);
   return { name: current.name, next: next?.name ?? null, nextAt: next?.min ?? null };
