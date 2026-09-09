@@ -17,6 +17,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as OrderRouteImport } from './routes/order'
 import { Route as PartnerRouteImport } from './routes/partner'
+import { Route as RewardsRouteImport } from './routes/rewards'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as WalletRouteImport } from './routes/wallet'
 import { Route as OrdersIndexRouteImport } from './routes/orders.index'
@@ -62,6 +63,11 @@ const PartnerRoute = PartnerRouteImport.update({
   path: '/partner',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RewardsRoute = RewardsRouteImport.update({
+  id: '/rewards',
+  path: '/rewards',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -92,6 +98,7 @@ export interface FileRoutesByFullPath {
   '/messages': typeof MessagesRoute
   '/order': typeof OrderRoute
   '/partner': typeof PartnerRoute
+  '/rewards': typeof RewardsRoute
   '/settings': typeof SettingsRoute
   '/wallet': typeof WalletRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
@@ -106,6 +113,7 @@ export interface FileRoutesByTo {
   '/messages': typeof MessagesRoute
   '/order': typeof OrderRoute
   '/partner': typeof PartnerRoute
+  '/rewards': typeof RewardsRoute
   '/settings': typeof SettingsRoute
   '/wallet': typeof WalletRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
@@ -121,6 +129,7 @@ export interface FileRoutesById {
   '/messages': typeof MessagesRoute
   '/order': typeof OrderRoute
   '/partner': typeof PartnerRoute
+  '/rewards': typeof RewardsRoute
   '/settings': typeof SettingsRoute
   '/wallet': typeof WalletRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
@@ -137,6 +146,7 @@ export interface FileRouteTypes {
     | '/messages'
     | '/order'
     | '/partner'
+    | '/rewards'
     | '/settings'
     | '/wallet'
     | '/orders/$orderId'
@@ -151,6 +161,7 @@ export interface FileRouteTypes {
     | '/messages'
     | '/order'
     | '/partner'
+    | '/rewards'
     | '/settings'
     | '/wallet'
     | '/orders/$orderId'
@@ -165,6 +176,7 @@ export interface FileRouteTypes {
     | '/messages'
     | '/order'
     | '/partner'
+    | '/rewards'
     | '/settings'
     | '/wallet'
     | '/orders/$orderId'
@@ -180,6 +192,7 @@ export interface RootRouteChildren {
   MessagesRoute: typeof MessagesRoute
   OrderRoute: typeof OrderRoute
   PartnerRoute: typeof PartnerRoute
+  RewardsRoute: typeof RewardsRoute
   SettingsRoute: typeof SettingsRoute
   WalletRoute: typeof WalletRoute
   OrdersOrderIdRoute: typeof OrdersOrderIdRoute
@@ -244,6 +257,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PartnerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/rewards': {
+      id: '/rewards'
+      path: '/rewards'
+      fullPath: '/rewards'
+      preLoaderRoute: typeof RewardsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settings': {
       id: '/settings'
       path: '/settings'
@@ -284,6 +304,7 @@ const rootRouteChildren: RootRouteChildren = {
   MessagesRoute: MessagesRoute,
   OrderRoute: OrderRoute,
   PartnerRoute: PartnerRoute,
+  RewardsRoute: RewardsRoute,
   SettingsRoute: SettingsRoute,
   WalletRoute: WalletRoute,
   OrdersOrderIdRoute: OrdersOrderIdRoute,
