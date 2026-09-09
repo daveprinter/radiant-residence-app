@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth, type Role } from "@/lib/auth";
 import { InstallPrompt } from "@/components/InstallPrompt";
 import cleaningVideo from "@/assets/auth-cleaning.mp4.asset.json";
+import cleaningFallback from "@/assets/auth-cleaning-fallback.jpg.asset.json";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -122,20 +123,26 @@ function AuthPage() {
   };
 
   return (
-    <div className="relative min-h-screen bg-background text-ink">
+    <div className="relative isolate min-h-screen overflow-hidden bg-background text-ink">
+      <img
+        src={cleaningFallback.url}
+        alt="Laundry cleaning in progress"
+        className="pointer-events-none fixed inset-0 z-0 size-full object-cover"
+      />
       <video
         src={cleaningVideo.url}
+        poster={cleaningFallback.url}
         autoPlay
         loop
         muted
         playsInline
         preload="auto"
         aria-hidden="true"
-        className="pointer-events-none fixed inset-0 -z-10 size-full object-cover"
+        className="pointer-events-none fixed inset-0 z-0 size-full object-cover"
       />
-      <div className="pointer-events-none fixed inset-0 -z-10 bg-background/70" />
+      <div className="pointer-events-none fixed inset-0 z-0 bg-background/35" />
       <InstallPrompt />
-      <div className="brand-gradient px-5 pb-8 pt-8 text-primary-foreground opacity-95">
+      <div className="relative z-10 bg-primary/65 px-5 pb-8 pt-8 text-primary-foreground backdrop-blur-[2px]">
         <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary-foreground/70">
           Welcome to
         </p>
@@ -145,7 +152,7 @@ function AuthPage() {
         </p>
       </div>
 
-      <div className="-mt-5 rounded-t-[26px] bg-background/85 px-4 pb-16 pt-5 backdrop-blur-sm">
+      <div className="relative z-10 -mt-5 min-h-[calc(100vh-9rem)] rounded-t-[26px] bg-background/75 px-4 pb-16 pt-5 backdrop-blur-sm">
         {!role ? (
           <>
             <h2 className="mb-1 font-display text-[18px] font-bold">Create your account</h2>
