@@ -19,6 +19,7 @@ import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as OrderRouteImport } from './routes/order'
 import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as RewardsRouteImport } from './routes/rewards'
+import { Route as RiderRouteImport } from './routes/rider'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as StaffRouteImport } from './routes/staff'
 import { Route as WalletRouteImport } from './routes/wallet'
@@ -75,6 +76,11 @@ const RewardsRoute = RewardsRouteImport.update({
   path: '/rewards',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RiderRoute = RiderRouteImport.update({
+  id: '/rider',
+  path: '/rider',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -112,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/order': typeof OrderRoute
   '/partner': typeof PartnerRoute
   '/rewards': typeof RewardsRoute
+  '/rider': typeof RiderRoute
   '/settings': typeof SettingsRoute
   '/staff': typeof StaffRoute
   '/wallet': typeof WalletRoute
@@ -129,6 +136,7 @@ export interface FileRoutesByTo {
   '/order': typeof OrderRoute
   '/partner': typeof PartnerRoute
   '/rewards': typeof RewardsRoute
+  '/rider': typeof RiderRoute
   '/settings': typeof SettingsRoute
   '/staff': typeof StaffRoute
   '/wallet': typeof WalletRoute
@@ -147,6 +155,7 @@ export interface FileRoutesById {
   '/order': typeof OrderRoute
   '/partner': typeof PartnerRoute
   '/rewards': typeof RewardsRoute
+  '/rider': typeof RiderRoute
   '/settings': typeof SettingsRoute
   '/staff': typeof StaffRoute
   '/wallet': typeof WalletRoute
@@ -166,6 +175,7 @@ export interface FileRouteTypes {
     | '/order'
     | '/partner'
     | '/rewards'
+    | '/rider'
     | '/settings'
     | '/staff'
     | '/wallet'
@@ -183,6 +193,7 @@ export interface FileRouteTypes {
     | '/order'
     | '/partner'
     | '/rewards'
+    | '/rider'
     | '/settings'
     | '/staff'
     | '/wallet'
@@ -200,6 +211,7 @@ export interface FileRouteTypes {
     | '/order'
     | '/partner'
     | '/rewards'
+    | '/rider'
     | '/settings'
     | '/staff'
     | '/wallet'
@@ -218,6 +230,7 @@ export interface RootRouteChildren {
   OrderRoute: typeof OrderRoute
   PartnerRoute: typeof PartnerRoute
   RewardsRoute: typeof RewardsRoute
+  RiderRoute: typeof RiderRoute
   SettingsRoute: typeof SettingsRoute
   StaffRoute: typeof StaffRoute
   WalletRoute: typeof WalletRoute
@@ -297,6 +310,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RewardsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/rider': {
+      id: '/rider'
+      path: '/rider'
+      fullPath: '/rider'
+      preLoaderRoute: typeof RiderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settings': {
       id: '/settings'
       path: '/settings'
@@ -346,6 +366,7 @@ const rootRouteChildren: RootRouteChildren = {
   OrderRoute: OrderRoute,
   PartnerRoute: PartnerRoute,
   RewardsRoute: RewardsRoute,
+  RiderRoute: RiderRoute,
   SettingsRoute: SettingsRoute,
   StaffRoute: StaffRoute,
   WalletRoute: WalletRoute,
