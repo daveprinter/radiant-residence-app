@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ComplaintsRouteImport } from './routes/complaints'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as MessagesRouteImport } from './routes/messages'
+import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as OrderRouteImport } from './routes/order'
 import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as RewardsRouteImport } from './routes/rewards'
@@ -51,6 +52,11 @@ const DashboardRoute = DashboardRouteImport.update({
 const MessagesRoute = MessagesRouteImport.update({
   id: '/messages',
   path: '/messages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OrderRoute = OrderRouteImport.update({
@@ -96,6 +102,7 @@ export interface FileRoutesByFullPath {
   '/complaints': typeof ComplaintsRoute
   '/dashboard': typeof DashboardRoute
   '/messages': typeof MessagesRoute
+  '/notifications': typeof NotificationsRoute
   '/order': typeof OrderRoute
   '/partner': typeof PartnerRoute
   '/rewards': typeof RewardsRoute
@@ -111,6 +118,7 @@ export interface FileRoutesByTo {
   '/complaints': typeof ComplaintsRoute
   '/dashboard': typeof DashboardRoute
   '/messages': typeof MessagesRoute
+  '/notifications': typeof NotificationsRoute
   '/order': typeof OrderRoute
   '/partner': typeof PartnerRoute
   '/rewards': typeof RewardsRoute
@@ -127,6 +135,7 @@ export interface FileRoutesById {
   '/complaints': typeof ComplaintsRoute
   '/dashboard': typeof DashboardRoute
   '/messages': typeof MessagesRoute
+  '/notifications': typeof NotificationsRoute
   '/order': typeof OrderRoute
   '/partner': typeof PartnerRoute
   '/rewards': typeof RewardsRoute
@@ -144,6 +153,7 @@ export interface FileRouteTypes {
     | '/complaints'
     | '/dashboard'
     | '/messages'
+    | '/notifications'
     | '/order'
     | '/partner'
     | '/rewards'
@@ -159,6 +169,7 @@ export interface FileRouteTypes {
     | '/complaints'
     | '/dashboard'
     | '/messages'
+    | '/notifications'
     | '/order'
     | '/partner'
     | '/rewards'
@@ -174,6 +185,7 @@ export interface FileRouteTypes {
     | '/complaints'
     | '/dashboard'
     | '/messages'
+    | '/notifications'
     | '/order'
     | '/partner'
     | '/rewards'
@@ -190,6 +202,7 @@ export interface RootRouteChildren {
   ComplaintsRoute: typeof ComplaintsRoute
   DashboardRoute: typeof DashboardRoute
   MessagesRoute: typeof MessagesRoute
+  NotificationsRoute: typeof NotificationsRoute
   OrderRoute: typeof OrderRoute
   PartnerRoute: typeof PartnerRoute
   RewardsRoute: typeof RewardsRoute
@@ -241,6 +254,13 @@ declare module '@tanstack/react-router' {
       path: '/messages'
       fullPath: '/messages'
       preLoaderRoute: typeof MessagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/order': {
@@ -302,6 +322,7 @@ const rootRouteChildren: RootRouteChildren = {
   ComplaintsRoute: ComplaintsRoute,
   DashboardRoute: DashboardRoute,
   MessagesRoute: MessagesRoute,
+  NotificationsRoute: NotificationsRoute,
   OrderRoute: OrderRoute,
   PartnerRoute: PartnerRoute,
   RewardsRoute: RewardsRoute,
