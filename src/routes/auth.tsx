@@ -140,9 +140,9 @@ function AuthPage() {
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 z-0 size-full object-cover"
       />
-      <div className="pointer-events-none fixed inset-0 z-0 bg-background/35" />
+      <div className="pointer-events-none fixed inset-0 z-0 bg-ink/10" />
       <InstallPrompt />
-      <div className="relative z-10 bg-primary/65 px-5 pb-8 pt-8 text-primary-foreground backdrop-blur-[2px]">
+      <div className="relative z-10 mx-auto max-w-md px-5 pb-6 pt-10 text-primary-foreground drop-shadow-lg">
         <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary-foreground/70">
           Welcome to
         </p>
@@ -152,7 +152,7 @@ function AuthPage() {
         </p>
       </div>
 
-      <div className="relative z-10 -mt-5 min-h-[calc(100vh-9rem)] rounded-t-[26px] bg-background/75 px-4 pb-16 pt-5 backdrop-blur-sm">
+      <div className="relative z-10 mx-4 mb-8 max-w-md rounded-2xl border border-card/70 bg-background/60 px-4 pb-5 pt-5 shadow-2xl backdrop-blur-md sm:mx-auto">
         {!role ? (
           <>
             <h2 className="mb-1 font-display text-[18px] font-bold">Create your account</h2>
