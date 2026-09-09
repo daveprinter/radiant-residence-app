@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth, type Role } from "@/lib/auth";
 import { InstallPrompt } from "@/components/InstallPrompt";
 import cleaningVideo from "@/assets/auth-cleaning.mp4.asset.json";
+import cleaningFallback from "@/assets/auth-cleaning-fallback.jpg.asset.json";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -123,8 +124,14 @@ function AuthPage() {
 
   return (
     <div className="relative isolate min-h-screen overflow-hidden bg-background text-ink">
+      <img
+        src={cleaningFallback.url}
+        alt="Laundry cleaning in progress"
+        className="pointer-events-none fixed inset-0 z-0 size-full object-cover"
+      />
       <video
         src={cleaningVideo.url}
+        poster={cleaningFallback.url}
         autoPlay
         loop
         muted
