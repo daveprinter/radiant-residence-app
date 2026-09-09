@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth, type Role } from "@/lib/auth";
 import { InstallPrompt } from "@/components/InstallPrompt";
+import cleaningVideo from "@/assets/auth-cleaning.mp4.asset.json";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
