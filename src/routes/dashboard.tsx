@@ -229,3 +229,15 @@ function Dashboard() {
     </AppShell>
   );
 }
+
+function Tile({ to, icon, title, sub }: { to: string; icon: string; title: string; sub: string }) {
+  return (
+    <Link to={to} className="surface flex items-center gap-2 p-3 text-left">
+      <span className="grid size-9 place-items-center rounded-xl bg-mint text-lg">{icon}</span>
+      <span>
+        <span className="block text-[13px] font-bold">{title}</span>
+        <span className="block text-[11px] text-ink/50">{sub}</span>
+      </span>
+    </Link>
+  );
+}
