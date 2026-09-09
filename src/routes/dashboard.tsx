@@ -184,20 +184,10 @@ function Dashboard() {
       </div>
 
       <div className="mx-4 mt-3 grid grid-cols-2 gap-2">
-        <Link to="/complaints" className="surface flex items-center gap-2 p-3 text-left">
-          <span className="grid size-9 place-items-center rounded-xl bg-sun/20 text-lg">⚠️</span>
-          <span>
-            <span className="block text-[13px] font-bold">Complaints</span>
-            <span className="block text-[11px] text-ink/50">File to management</span>
-          </span>
-        </Link>
-        <Link to="/messages" className="surface flex items-center gap-2 p-3 text-left">
-          <span className="grid size-9 place-items-center rounded-xl bg-mint text-lg">💬</span>
-          <span>
-            <span className="block text-[13px] font-bold">Messages</span>
-            <span className="block text-[11px] text-ink/50">Chat with management</span>
-          </span>
-        </Link>
+        <Tile to="/wallet" icon="💳" title="Wallet" sub="Pay & top up" />
+        <Tile to="/rewards" icon="🎁" title="Rewards" sub="Points & coupons" />
+        <Tile to="/notifications" icon="🔔" title="Alerts" sub="Order updates" />
+        <Tile to="/complaints" icon="⚠️" title="Complaints" sub="File to management" />
       </div>
 
       <div className="mx-4 mt-4">
@@ -237,5 +227,17 @@ function Dashboard() {
         </Link>
       </div>
     </AppShell>
+  );
+}
+
+function Tile({ to, icon, title, sub }: { to: string; icon: string; title: string; sub: string }) {
+  return (
+    <Link to={to} className="surface flex items-center gap-2 p-3 text-left">
+      <span className="grid size-9 place-items-center rounded-xl bg-mint text-lg">{icon}</span>
+      <span>
+        <span className="block text-[13px] font-bold">{title}</span>
+        <span className="block text-[11px] text-ink/50">{sub}</span>
+      </span>
+    </Link>
   );
 }

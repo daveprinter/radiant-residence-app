@@ -15,7 +15,7 @@ export type Profile = {
   referred_by: string | null;
 };
 
-export type Role = "customer" | "partner" | "admin";
+export type Role = "customer" | "partner" | "admin" | "staff" | "rider";
 
 type AuthValue = {
   user: User | null;

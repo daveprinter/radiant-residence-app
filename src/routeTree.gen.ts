@@ -15,9 +15,14 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ComplaintsRouteImport } from './routes/complaints'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as MessagesRouteImport } from './routes/messages'
+import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as OrderRouteImport } from './routes/order'
 import { Route as PartnerRouteImport } from './routes/partner'
+import { Route as RewardsRouteImport } from './routes/rewards'
+import { Route as RiderRouteImport } from './routes/rider'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as StaffRouteImport } from './routes/staff'
+import { Route as WalletRouteImport } from './routes/wallet'
 import { Route as OrdersIndexRouteImport } from './routes/orders.index'
 import { Route as OrdersOrderIdRouteImport } from './routes/orders.$orderId'
 
@@ -51,6 +56,11 @@ const MessagesRoute = MessagesRouteImport.update({
   path: '/messages',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OrderRoute = OrderRouteImport.update({
   id: '/order',
   path: '/order',
@@ -61,9 +71,29 @@ const PartnerRoute = PartnerRouteImport.update({
   path: '/partner',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RewardsRoute = RewardsRouteImport.update({
+  id: '/rewards',
+  path: '/rewards',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RiderRoute = RiderRouteImport.update({
+  id: '/rider',
+  path: '/rider',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StaffRoute = StaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WalletRoute = WalletRouteImport.update({
+  id: '/wallet',
+  path: '/wallet',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OrdersIndexRoute = OrdersIndexRouteImport.update({
@@ -84,9 +114,14 @@ export interface FileRoutesByFullPath {
   '/complaints': typeof ComplaintsRoute
   '/dashboard': typeof DashboardRoute
   '/messages': typeof MessagesRoute
+  '/notifications': typeof NotificationsRoute
   '/order': typeof OrderRoute
   '/partner': typeof PartnerRoute
+  '/rewards': typeof RewardsRoute
+  '/rider': typeof RiderRoute
   '/settings': typeof SettingsRoute
+  '/staff': typeof StaffRoute
+  '/wallet': typeof WalletRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/orders/': typeof OrdersIndexRoute
 }
@@ -97,9 +132,14 @@ export interface FileRoutesByTo {
   '/complaints': typeof ComplaintsRoute
   '/dashboard': typeof DashboardRoute
   '/messages': typeof MessagesRoute
+  '/notifications': typeof NotificationsRoute
   '/order': typeof OrderRoute
   '/partner': typeof PartnerRoute
+  '/rewards': typeof RewardsRoute
+  '/rider': typeof RiderRoute
   '/settings': typeof SettingsRoute
+  '/staff': typeof StaffRoute
+  '/wallet': typeof WalletRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/orders': typeof OrdersIndexRoute
 }
@@ -111,9 +151,14 @@ export interface FileRoutesById {
   '/complaints': typeof ComplaintsRoute
   '/dashboard': typeof DashboardRoute
   '/messages': typeof MessagesRoute
+  '/notifications': typeof NotificationsRoute
   '/order': typeof OrderRoute
   '/partner': typeof PartnerRoute
+  '/rewards': typeof RewardsRoute
+  '/rider': typeof RiderRoute
   '/settings': typeof SettingsRoute
+  '/staff': typeof StaffRoute
+  '/wallet': typeof WalletRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/orders/': typeof OrdersIndexRoute
 }
@@ -126,9 +171,14 @@ export interface FileRouteTypes {
     | '/complaints'
     | '/dashboard'
     | '/messages'
+    | '/notifications'
     | '/order'
     | '/partner'
+    | '/rewards'
+    | '/rider'
     | '/settings'
+    | '/staff'
+    | '/wallet'
     | '/orders/$orderId'
     | '/orders/'
   fileRoutesByTo: FileRoutesByTo
@@ -139,9 +189,14 @@ export interface FileRouteTypes {
     | '/complaints'
     | '/dashboard'
     | '/messages'
+    | '/notifications'
     | '/order'
     | '/partner'
+    | '/rewards'
+    | '/rider'
     | '/settings'
+    | '/staff'
+    | '/wallet'
     | '/orders/$orderId'
     | '/orders'
   id:
@@ -152,9 +207,14 @@ export interface FileRouteTypes {
     | '/complaints'
     | '/dashboard'
     | '/messages'
+    | '/notifications'
     | '/order'
     | '/partner'
+    | '/rewards'
+    | '/rider'
     | '/settings'
+    | '/staff'
+    | '/wallet'
     | '/orders/$orderId'
     | '/orders/'
   fileRoutesById: FileRoutesById
@@ -166,9 +226,14 @@ export interface RootRouteChildren {
   ComplaintsRoute: typeof ComplaintsRoute
   DashboardRoute: typeof DashboardRoute
   MessagesRoute: typeof MessagesRoute
+  NotificationsRoute: typeof NotificationsRoute
   OrderRoute: typeof OrderRoute
   PartnerRoute: typeof PartnerRoute
+  RewardsRoute: typeof RewardsRoute
+  RiderRoute: typeof RiderRoute
   SettingsRoute: typeof SettingsRoute
+  StaffRoute: typeof StaffRoute
+  WalletRoute: typeof WalletRoute
   OrdersOrderIdRoute: typeof OrdersOrderIdRoute
   OrdersIndexRoute: typeof OrdersIndexRoute
 }
@@ -217,6 +282,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MessagesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/order': {
       id: '/order'
       path: '/order'
@@ -231,11 +303,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PartnerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/rewards': {
+      id: '/rewards'
+      path: '/rewards'
+      fullPath: '/rewards'
+      preLoaderRoute: typeof RewardsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rider': {
+      id: '/rider'
+      path: '/rider'
+      fullPath: '/rider'
+      preLoaderRoute: typeof RiderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settings': {
       id: '/settings'
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/staff': {
+      id: '/staff'
+      path: '/staff'
+      fullPath: '/staff'
+      preLoaderRoute: typeof StaffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wallet': {
+      id: '/wallet'
+      path: '/wallet'
+      fullPath: '/wallet'
+      preLoaderRoute: typeof WalletRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/orders/': {
@@ -262,9 +362,14 @@ const rootRouteChildren: RootRouteChildren = {
   ComplaintsRoute: ComplaintsRoute,
   DashboardRoute: DashboardRoute,
   MessagesRoute: MessagesRoute,
+  NotificationsRoute: NotificationsRoute,
   OrderRoute: OrderRoute,
   PartnerRoute: PartnerRoute,
+  RewardsRoute: RewardsRoute,
+  RiderRoute: RiderRoute,
   SettingsRoute: SettingsRoute,
+  StaffRoute: StaffRoute,
+  WalletRoute: WalletRoute,
   OrdersOrderIdRoute: OrdersOrderIdRoute,
   OrdersIndexRoute: OrdersIndexRoute,
 }
