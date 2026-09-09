@@ -75,7 +75,8 @@ export function Chat({
       setSigned((prev) => {
         const next = { ...prev };
         data.forEach((d, i) => {
-          if (d.signedUrl) next[paths[i]] = d.signedUrl;
+          const path = paths[i];
+          if (d.signedUrl && path) next[path] = d.signedUrl;
         });
         return next;
       });

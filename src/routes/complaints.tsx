@@ -32,7 +32,7 @@ export const Route = createFileRoute("/complaints")({
 function Complaints() {
   const { user } = useAuth();
   const qc = useQueryClient();
-  const [category, setCategory] = useState(CATEGORIES[0]);
+  const [category, setCategory] = useState<string>(CATEGORIES[0]!);
   const [orderCodeValue, setOrderCodeValue] = useState("");
   const [body, setBody] = useState("");
   const [busy, setBusy] = useState(false);
