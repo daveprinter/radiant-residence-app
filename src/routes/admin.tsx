@@ -8,6 +8,16 @@ import { Guard } from "@/components/Guard";
 import { PageHeader } from "@/components/AppShell";
 import { Chat } from "@/components/Chat";
 import { ksh, STAGES } from "@/lib/brightride";
+import {
+  AdminAudit,
+  AdminCustomers,
+  AdminFinance,
+  AdminPartners,
+  AdminPromotions,
+  AdminReviews,
+  AdminServices,
+  AdminSettings,
+} from "@/components/admin/panels";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
