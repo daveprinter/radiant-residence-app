@@ -52,8 +52,16 @@ function AuthPage() {
   }, []);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+    const ref = new URLSearchParams(window.location.search).get("ref");
+    if (ref) setForm((f) => (f.referredBy ? f : { ...f, referredBy: ref.trim().toUpperCase() }));
+  }, []);
+
+  useEffect(() => {
     if (authLoading || !user) return;
     if (roles.includes("admin")) void navigate({ to: "/admin" });
+    else if (roles.includes("staff")) void navigate({ to: "/staff" });
+    else if (roles.includes("rider")) void navigate({ to: "/rider" });
     else if (roles.includes("partner")) void navigate({ to: "/partner" });
     else void navigate({ to: "/dashboard" });
   }, [authLoading, user, roles, navigate]);
