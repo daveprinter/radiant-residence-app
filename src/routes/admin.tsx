@@ -59,7 +59,7 @@ function Admin() {
           <button
             key={t}
             onClick={() => setTab(t)}
-            className={`rounded-xl px-3 py-2 text-[12px] font-bold capitalize ${
+            className={`shrink-0 rounded-xl px-3 py-2 text-[12px] font-bold capitalize ${
               tab === t ? "bg-ink text-primary-foreground" : "bg-card text-ink/60"
             }`}
           >
