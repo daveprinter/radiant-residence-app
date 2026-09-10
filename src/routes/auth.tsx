@@ -4,8 +4,9 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth, type Role } from "@/lib/auth";
 import { InstallPrompt } from "@/components/InstallPrompt";
-import cleaningVideo from "@/assets/auth-cleaning.mp4.asset.json";
-import cleaningFallback from "@/assets/auth-cleaning-fallback.jpg.asset.json";
+import { Splash } from "@/components/Splash";
+import cleaningVideo from "@/assets/auth-cleaning-v2.mp4.asset.json";
+import cleaningFallback from "@/assets/auth-cleaning-fallback-v2.jpg";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -31,6 +32,7 @@ type Mode = "signup" | "signin";
 function AuthPage() {
   const navigate = useNavigate();
   const { user, roles, loading: authLoading } = useAuth();
+  const [showSplash, setShowSplash] = useState(true);
   const [role, setRole] = useState<Role | null>(null);
   const [mode, setMode] = useState<Mode>("signup");
   const [busy, setBusy] = useState(false);
@@ -43,6 +45,11 @@ function AuthPage() {
     referredBy: "",
   });
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setShowSplash(false), 1800);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (authLoading || !user) return;
@@ -124,14 +131,17 @@ function AuthPage() {
 
   return (
     <div className="relative isolate min-h-screen overflow-hidden bg-background text-ink">
+      {showSplash ? <Splash /> : null}
       <img
-        src={cleaningFallback.url}
-        alt="Laundry cleaning in progress"
+        src={cleaningFallback}
+        alt="Brown and blue towels beside a laundry basket"
+        width={1080}
+        height={1920}
         className="pointer-events-none fixed inset-0 z-0 size-full object-cover"
       />
       <video
         src={cleaningVideo.url}
-        poster={cleaningFallback.url}
+        poster={cleaningFallback}
         autoPlay
         loop
         muted
