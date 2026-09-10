@@ -150,3 +150,17 @@
 @utility pop-in {
   animation: soft-pop 0.4s ease-out both;
 }
+
+/* Visually hide the Lovable badge overlay without disabling it in project settings. */
+#lovable-badge,
+a#lovable-badge,
+[id^="lovable-badge"],
+[class*="lovable-badge"],
+a[href*="lovable.dev/projects"],
+a[href*="lovable.dev?utm"],
+a[href*="lovable.dev/?utm"] {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
