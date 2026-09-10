@@ -69,8 +69,16 @@ function Admin() {
       </div>
 
       {tab === "orders" ? <AdminOrders /> : null}
+      {tab === "customers" ? <AdminCustomers /> : null}
+      {tab === "services" ? <AdminServices /> : null}
+      {tab === "finance" ? <AdminFinance /> : null}
+      {tab === "partners" ? <AdminPartners /> : null}
+      {tab === "promotions" ? <AdminPromotions /> : null}
+      {tab === "reviews" ? <AdminReviews /> : null}
       {tab === "complaints" ? <AdminComplaints /> : null}
       {tab === "chat" ? <AdminChat /> : null}
+      {tab === "settings" ? <AdminSettings /> : null}
+      {tab === "audit" ? <AdminAudit /> : null}
 
       <button
         onClick={async () => {
