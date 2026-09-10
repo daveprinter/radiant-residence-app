@@ -54,8 +54,8 @@ function Admin() {
     <div className="min-h-screen bg-background pb-16 text-ink">
       <PageHeader title="Management panel" subtitle="BrightRide operations" />
 
-      <div className="mx-4 mb-3 flex gap-2">
-        {(["orders", "complaints", "chat"] as Tab[]).map((t) => (
+      <div className="mx-4 mb-3 flex gap-2 overflow-x-auto pb-1">
+        {TABS.map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
