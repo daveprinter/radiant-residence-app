@@ -8,6 +8,16 @@ import { Guard } from "@/components/Guard";
 import { PageHeader } from "@/components/AppShell";
 import { Chat } from "@/components/Chat";
 import { ksh, STAGES } from "@/lib/brightride";
+import {
+  AdminAudit,
+  AdminCustomers,
+  AdminFinance,
+  AdminPartners,
+  AdminPromotions,
+  AdminReviews,
+  AdminServices,
+  AdminSettings,
+} from "@/components/admin/panels";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -29,7 +39,21 @@ export const Route = createFileRoute("/admin")({
   ),
 });
 
-type Tab = "orders" | "complaints" | "chat";
+const TABS = [
+  "orders",
+  "customers",
+  "services",
+  "finance",
+  "partners",
+  "promotions",
+  "reviews",
+  "complaints",
+  "chat",
+  "settings",
+  "audit",
+] as const;
+
+type Tab = (typeof TABS)[number];
 
 function Admin() {
   const { signOut } = useAuth();
@@ -40,12 +64,12 @@ function Admin() {
     <div className="min-h-screen bg-background pb-16 text-ink">
       <PageHeader title="Management panel" subtitle="BrightRide operations" />
 
-      <div className="mx-4 mb-3 flex gap-2">
-        {(["orders", "complaints", "chat"] as Tab[]).map((t) => (
+      <div className="mx-4 mb-3 flex gap-2 overflow-x-auto pb-1">
+        {TABS.map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
-            className={`rounded-xl px-3 py-2 text-[12px] font-bold capitalize ${
+            className={`shrink-0 rounded-xl px-3 py-2 text-[12px] font-bold capitalize ${
               tab === t ? "bg-ink text-primary-foreground" : "bg-card text-ink/60"
             }`}
           >
@@ -55,8 +79,16 @@ function Admin() {
       </div>
 
       {tab === "orders" ? <AdminOrders /> : null}
+      {tab === "customers" ? <AdminCustomers /> : null}
+      {tab === "services" ? <AdminServices /> : null}
+      {tab === "finance" ? <AdminFinance /> : null}
+      {tab === "partners" ? <AdminPartners /> : null}
+      {tab === "promotions" ? <AdminPromotions /> : null}
+      {tab === "reviews" ? <AdminReviews /> : null}
       {tab === "complaints" ? <AdminComplaints /> : null}
       {tab === "chat" ? <AdminChat /> : null}
+      {tab === "settings" ? <AdminSettings /> : null}
+      {tab === "audit" ? <AdminAudit /> : null}
 
       <button
         onClick={async () => {
