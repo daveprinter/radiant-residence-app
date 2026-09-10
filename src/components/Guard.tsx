@@ -15,6 +15,8 @@ export function Guard({ allow, children }: { allow: Role[]; children: ReactNode 
     }
     if (roles.length && !roles.some((r) => allow.includes(r))) {
       if (roles.includes("admin")) void navigate({ to: "/admin" });
+      else if (roles.includes("staff")) void navigate({ to: "/staff" });
+      else if (roles.includes("rider")) void navigate({ to: "/rider" });
       else if (roles.includes("partner")) void navigate({ to: "/partner" });
       else void navigate({ to: "/dashboard" });
     }
