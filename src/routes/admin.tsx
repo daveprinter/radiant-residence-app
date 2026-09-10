@@ -29,7 +29,21 @@ export const Route = createFileRoute("/admin")({
   ),
 });
 
-type Tab = "orders" | "complaints" | "chat";
+const TABS = [
+  "orders",
+  "customers",
+  "services",
+  "finance",
+  "partners",
+  "promotions",
+  "reviews",
+  "complaints",
+  "chat",
+  "settings",
+  "audit",
+] as const;
+
+type Tab = (typeof TABS)[number];
 
 function Admin() {
   const { signOut } = useAuth();
