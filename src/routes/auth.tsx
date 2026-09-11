@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth, type Role } from "@/lib/auth";
@@ -31,7 +31,8 @@ type Mode = "signup" | "signin";
 
 function AuthPage() {
   const navigate = useNavigate();
-  const { user, roles, loading: authLoading } = useAuth();
+  const { user, roles, loading: authLoading, refresh } = useAuth();
+  const accountSetupStarted = useRef(false);
   const [showSplash, setShowSplash] = useState(true);
   const [role, setRole] = useState<Role | null>(null);
   const [mode, setMode] = useState<Mode>("signup");
@@ -59,12 +60,70 @@ function AuthPage() {
 
   useEffect(() => {
     if (authLoading || !user) return;
-    if (roles.includes("admin")) void navigate({ to: "/admin" });
-    else if (roles.includes("staff")) void navigate({ to: "/staff" });
-    else if (roles.includes("rider")) void navigate({ to: "/rider" });
-    else if (roles.includes("partner")) void navigate({ to: "/partner" });
-    else void navigate({ to: "/dashboard" });
-  }, [authLoading, user, roles, navigate]);
+    if (roles.includes("admin")) {
+      void navigate({ to: "/admin" });
+      return;
+    }
+    if (roles.includes("staff")) {
+      void navigate({ to: "/staff" });
+      return;
+    }
+    if (roles.includes("rider")) {
+      void navigate({ to: "/rider" });
+      return;
+    }
+    if (roles.includes("partner")) {
+      void navigate({ to: "/partner" });
+      return;
+    }
+    if (roles.includes("customer")) {
+      void navigate({ to: "/dashboard" });
+      return;
+    }
+
+    if (accountSetupStarted.current) return;
+    const savedRole = user.user_metadata.account_role;
+    const initialRole =
+      savedRole === "customer" || savedRole === "partner"
+        ? savedRole
+        : role === "customer" || role === "partner"
+          ? role
+          : null;
+    if (!initialRole) {
+      setError("Choose customer or marketer / partner, then sign in again.");
+      return;
+    }
+
+    accountSetupStarted.current = true;
+    setBusy(true);
+    void (async () => {
+      const metadata = user.user_metadata;
+      const profileResult = await supabase.from("profiles").insert({
+        id: user.id,
+        first_name: typeof metadata.first_name === "string" ? metadata.first_name : "",
+        last_name: typeof metadata.last_name === "string" ? metadata.last_name : "",
+        email: user.email ?? "",
+        phone: typeof metadata.phone === "string" ? metadata.phone : "",
+        referral_code:
+          typeof metadata.referral_code === "string" ? metadata.referral_code : null,
+        referred_by: typeof metadata.referred_by === "string" ? metadata.referred_by : null,
+      });
+      if (profileResult.error && profileResult.error.code !== "23505") throw profileResult.error;
+
+      const roleResult = await supabase
+        .from("user_roles")
+        .insert({ user_id: user.id, role: initialRole });
+      if (roleResult.error && roleResult.error.code !== "23505") throw roleResult.error;
+      await refresh();
+    })()
+      .catch((setupError: unknown) => {
+        accountSetupStarted.current = false;
+        setError(
+          setupError instanceof Error ? setupError.message : "Your account setup could not finish.",
+        );
+      })
+      .finally(() => setBusy(false));
+  }, [authLoading, user, roles, role, navigate, refresh]);
 
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
@@ -88,10 +147,21 @@ function AuthPage() {
           setError("Please fill in your name and phone number.");
           return;
         }
+        const code = `${form.firstName.slice(0, 4).toUpperCase()}${Math.floor(100 + Math.random() * 900)}`;
         const { data, error: signUpError } = await supabase.auth.signUp({
           email,
           password: form.password,
-          options: { emailRedirectTo: `${window.location.origin}/` },
+          options: {
+            emailRedirectTo: `${window.location.origin}/auth`,
+            data: {
+              account_role: role,
+              first_name: form.firstName.trim(),
+              last_name: form.lastName.trim(),
+              phone: form.phone.trim(),
+              referral_code: code,
+              referred_by: form.referredBy.trim() || null,
+            },
+          },
         });
         if (signUpError) throw signUpError;
         if (data.user && data.user.identities && data.user.identities.length === 0) {
@@ -102,18 +172,12 @@ function AuthPage() {
         const uid = data.user?.id;
         if (!uid) throw new Error("Account could not be created");
 
-        const code = `${form.firstName.slice(0, 4).toUpperCase()}${Math.floor(100 + Math.random() * 900)}`;
-        await supabase.from("profiles").insert({
-          id: uid,
-          first_name: form.firstName.trim(),
-          last_name: form.lastName.trim(),
-          email,
-          phone: form.phone.trim(),
-          referral_code: code,
-          referred_by: form.referredBy.trim() || null,
-        });
-        await supabase.from("user_roles").insert({ user_id: uid, role });
-        toast.success("Welcome to BrightRide!");
+        if (data.session) {
+          toast.success("Welcome to BrightRide!");
+        } else {
+          setError("Check your email to confirm your account, then sign in here.");
+          setMode("signin");
+        }
       } else {
         if (!exists) {
           setError("No account found with this email. Create one to get started.");
