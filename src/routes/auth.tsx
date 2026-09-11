@@ -82,7 +82,7 @@ function AuthPage() {
     }
 
     if (accountSetupStarted.current) return;
-    const savedRole = user.user_metadata.account_role;
+    const savedRole = user.user_metadata["account_role"];
     const initialRole =
       savedRole === "customer" || savedRole === "partner"
         ? savedRole
@@ -100,13 +100,14 @@ function AuthPage() {
       const metadata = user.user_metadata;
       const profileResult = await supabase.from("profiles").insert({
         id: user.id,
-        first_name: typeof metadata.first_name === "string" ? metadata.first_name : "",
-        last_name: typeof metadata.last_name === "string" ? metadata.last_name : "",
+        first_name: typeof metadata["first_name"] === "string" ? metadata["first_name"] : "",
+        last_name: typeof metadata["last_name"] === "string" ? metadata["last_name"] : "",
         email: user.email ?? "",
-        phone: typeof metadata.phone === "string" ? metadata.phone : "",
+        phone: typeof metadata["phone"] === "string" ? metadata["phone"] : "",
         referral_code:
-          typeof metadata.referral_code === "string" ? metadata.referral_code : null,
-        referred_by: typeof metadata.referred_by === "string" ? metadata.referred_by : null,
+          typeof metadata["referral_code"] === "string" ? metadata["referral_code"] : null,
+        referred_by:
+          typeof metadata["referred_by"] === "string" ? metadata["referred_by"] : null,
       });
       if (profileResult.error && profileResult.error.code !== "23505") throw profileResult.error;
 
