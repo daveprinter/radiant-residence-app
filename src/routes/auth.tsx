@@ -143,6 +143,10 @@ function AuthPage() {
     e.preventDefault();
     setError(null);
     if (!role) return;
+    if (form.password.length < 6) {
+      setError("Your password must be at least 6 characters.");
+      return;
+    }
     setBusy(true);
     try {
       const email = form.email.trim().toLowerCase();
@@ -158,7 +162,7 @@ function AuthPage() {
           setError("Please fill in your name and phone number.");
           return;
         }
-        const code = `${form.firstName.slice(0, 4).toUpperCase()}${Math.floor(100 + Math.random() * 900)}`;
+        const referralCode = `${form.firstName.slice(0, 4).toUpperCase()}${Math.floor(100 + Math.random() * 900)}`;
         const { data, error: signUpError } = await supabase.auth.signUp({
           email,
           password: form.password,
@@ -169,7 +173,7 @@ function AuthPage() {
               first_name: form.firstName.trim(),
               last_name: form.lastName.trim(),
               phone: form.phone.trim(),
-              referral_code: code,
+              referral_code: referralCode,
               referred_by: form.referredBy.trim() || null,
             },
           },
@@ -180,14 +184,15 @@ function AuthPage() {
           setMode("signin");
           return;
         }
-        const uid = data.user?.id;
-        if (!uid) throw new Error("Account could not be created");
+        if (!data.user?.id) throw new Error("Account could not be created");
 
         if (data.session) {
           toast.success("Welcome to BrightRide!");
         } else {
-          setError("Check your email to confirm your account, then sign in here.");
-          setMode("signin");
+          setCode("");
+          setCooldown(60);
+          setStep("verify");
+          toast.success("We sent a 6-digit code to your email");
         }
       } else {
         if (!exists) {
@@ -200,6 +205,15 @@ function AuthPage() {
           password: form.password,
         });
         if (signInError) {
+          if (signInError.message.toLowerCase().includes("not confirmed")) {
+            await supabase.auth.resend({ type: "signup", email });
+            setCode("");
+            setCooldown(60);
+            setStep("verify");
+            setError(null);
+            toast.success("We sent a 6-digit code to your email");
+            return;
+          }
           setError("That password is not correct. Please try again.");
           return;
         }
@@ -210,6 +224,53 @@ function AuthPage() {
     } finally {
       setBusy(false);
     }
+  };
+
+  const verifyCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    const token = code.replace(/\D/g, "");
+    if (token.length !== 6) {
+      setError("Enter the 6-digit code from your email.");
+      return;
+    }
+    setBusy(true);
+    try {
+      const email = form.email.trim().toLowerCase();
+      const { error: verifyError } = await supabase.auth.verifyOtp({
+        email,
+        token,
+        type: "signup",
+      });
+      if (verifyError) {
+        const retry = await supabase.auth.verifyOtp({ email, token, type: "email" });
+        if (retry.error) {
+          setError("That code is wrong or has expired. Request a new one.");
+          return;
+        }
+      }
+      setStep("form");
+      toast.success("Email verified");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const resendCode = async () => {
+    if (cooldown > 0) return;
+    setError(null);
+    setBusy(true);
+    const email = form.email.trim().toLowerCase();
+    const { error: resendError } = await supabase.auth.resend({ type: "signup", email });
+    setBusy(false);
+    if (resendError) {
+      setError("We could not send a new code right now. Please try again shortly.");
+      return;
+    }
+    setCooldown(60);
+    toast.success("A new code is on its way");
   };
 
   return (
