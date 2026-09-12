@@ -125,6 +125,7 @@ function AuthPage() {
         .insert({ user_id: user.id, role: initialRole });
       if (roleResult.error && roleResult.error.code !== "23505") throw roleResult.error;
       await refresh();
+      void navigate({ to: initialRole === "partner" ? "/partner" : "/dashboard" });
     })()
       .catch((setupError: unknown) => {
         accountSetupStarted.current = false;
