@@ -46,6 +46,15 @@ function AuthPage() {
     referredBy: "",
   });
   const [error, setError] = useState<string | null>(null);
+  const [step, setStep] = useState<"form" | "verify">("form");
+  const [code, setCode] = useState("");
+  const [cooldown, setCooldown] = useState(0);
+
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const t = window.setInterval(() => setCooldown((c) => (c > 0 ? c - 1 : 0)), 1000);
+    return () => window.clearInterval(t);
+  }, [cooldown]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setShowSplash(false), 1800);
