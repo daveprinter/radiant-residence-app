@@ -46,15 +46,6 @@ function AuthPage() {
     referredBy: "",
   });
   const [error, setError] = useState<string | null>(null);
-  const [step, setStep] = useState<"form" | "verify">("form");
-  const [code, setCode] = useState("");
-  const [cooldown, setCooldown] = useState(0);
-
-  useEffect(() => {
-    if (cooldown <= 0) return;
-    const t = window.setInterval(() => setCooldown((c) => (c > 0 ? c - 1 : 0)), 1000);
-    return () => window.clearInterval(t);
-  }, [cooldown]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setShowSplash(false), 1800);
@@ -186,14 +177,14 @@ function AuthPage() {
         }
         if (!data.user?.id) throw new Error("Account could not be created");
 
-        if (data.session) {
-          toast.success("Welcome to BrightRide!");
-        } else {
-          setCode("");
-          setCooldown(60);
-          setStep("verify");
-          toast.success("We sent a 6-digit code to your email");
+        if (!data.session) {
+          const { error: postSignInError } = await supabase.auth.signInWithPassword({
+            email,
+            password: form.password,
+          });
+          if (postSignInError) throw postSignInError;
         }
+        toast.success("Welcome to BrightRide!");
       } else {
         if (!exists) {
           setError("No account found with this email. Create one to get started.");
@@ -205,15 +196,6 @@ function AuthPage() {
           password: form.password,
         });
         if (signInError) {
-          if (signInError.message.toLowerCase().includes("not confirmed")) {
-            await supabase.auth.resend({ type: "signup", email });
-            setCode("");
-            setCooldown(60);
-            setStep("verify");
-            setError(null);
-            toast.success("We sent a 6-digit code to your email");
-            return;
-          }
           setError("That password is not correct. Please try again.");
           return;
         }
@@ -226,52 +208,6 @@ function AuthPage() {
     }
   };
 
-  const verifyCode = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    const token = code.replace(/\D/g, "");
-    if (token.length !== 6) {
-      setError("Enter the 6-digit code from your email.");
-      return;
-    }
-    setBusy(true);
-    try {
-      const email = form.email.trim().toLowerCase();
-      const { error: verifyError } = await supabase.auth.verifyOtp({
-        email,
-        token,
-        type: "signup",
-      });
-      if (verifyError) {
-        const retry = await supabase.auth.verifyOtp({ email, token, type: "email" });
-        if (retry.error) {
-          setError("That code is wrong or has expired. Request a new one.");
-          return;
-        }
-      }
-      setStep("form");
-      toast.success("Email verified");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  const resendCode = async () => {
-    if (cooldown > 0) return;
-    setError(null);
-    setBusy(true);
-    const email = form.email.trim().toLowerCase();
-    const { error: resendError } = await supabase.auth.resend({ type: "signup", email });
-    setBusy(false);
-    if (resendError) {
-      setError("We could not send a new code right now. Please try again shortly.");
-      return;
-    }
-    setCooldown(60);
-    toast.success("A new code is on its way");
-  };
 
   return (
     <div className="relative isolate min-h-screen overflow-hidden bg-background text-ink">
@@ -307,53 +243,7 @@ function AuthPage() {
       </div>
 
       <div className="relative z-10 mx-4 mb-8 max-w-md rounded-2xl border border-card/70 bg-background/60 px-4 pb-5 pt-5 shadow-2xl backdrop-blur-md sm:mx-auto">
-        {step === "verify" ? (
-          <form onSubmit={verifyCode} className="grid gap-3">
-            <h2 className="font-display text-[18px] font-bold">Enter your 6-digit code</h2>
-            <p className="-mt-1 text-[12px] text-ink/50">
-              We emailed a code to {form.email.trim().toLowerCase()}. It expires in 10 minutes.
-            </p>
-            <input
-              value={code}
-              onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-              inputMode="numeric"
-              autoComplete="one-time-code"
-              placeholder="••••••"
-              className="w-full rounded-xl border border-border bg-card px-3.5 py-3 text-center text-[22px] font-bold tracking-[0.45em] outline-none placeholder:text-ink/25 focus:border-brand"
-            />
-            {error ? (
-              <p className="rounded-xl bg-destructive/10 px-3 py-2 text-[12px] font-semibold text-destructive">
-                {error}
-              </p>
-            ) : null}
-            <button
-              disabled={busy}
-              className="mt-1 w-full rounded-xl bg-ink py-3 text-[14px] font-bold text-primary-foreground disabled:opacity-60"
-            >
-              {busy ? "Please wait…" : "Verify and continue"}
-            </button>
-            <div className="flex items-center justify-between">
-              <button
-                type="button"
-                onClick={() => void resendCode()}
-                disabled={busy || cooldown > 0}
-                className="text-[12px] font-semibold text-brand disabled:opacity-50"
-              >
-                {cooldown > 0 ? `Resend code in ${cooldown}s` : "Resend code"}
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setStep("form");
-                  setError(null);
-                }}
-                className="text-[12px] font-semibold text-ink/50"
-              >
-                Back
-              </button>
-            </div>
-          </form>
-        ) : !role ? (
+        {!role ? (
           <>
             <h2 className="mb-1 font-display text-[18px] font-bold">Create your account</h2>
             <p className="mb-4 text-[13px] text-ink/50">Choose how you want to join BrightRide.</p>
